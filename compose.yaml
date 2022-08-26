@@ -7,6 +7,8 @@ services:
                         MYSQL_DATABASE: wordpress
                         MYSQL_USER: mumin
                         MYSQL_PASSWORD: passwd
+                ports:
+                        - 3306:3306
                 volumes:
                         - mysql:/var/lib/mysql
 
