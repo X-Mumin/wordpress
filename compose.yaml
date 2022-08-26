@@ -1,0 +1,44 @@
+services:
+        database:
+                restart: always
+                image: mysql:latest
+                environment:
+                        MYSQL_ROOT_PASSWORD: root
+                        MYSQL_DATABASE: wordpress
+                        MYSQL_USER: mumin
+                        MYSQL_PASSWORD: passwd
+                volumes:
+                        - mysql:/var/lib/mysql
+
+        wordpress:
+                depends_on:
+                        - database
+                image: wordpress:latest
+                restart: always
+                ports:
+                        - 8000:80
+                environment:
+                        WORDPRESS_DB_HOST: database
+                        WORDPRESS_DB_USER: mumin
+                        WORDPRESS_DB_PASSWORD: passwd
+                        WORDPRESS_DB_NAME: wordpress
+
+                volumes:
+                        - wordpress:/var/www/html
+
+        phpDBadmin:
+                depends_on:
+                        - database
+                image: phpmyadmin:latest
+                restart: always
+                ports:
+                        - 8080:80
+                environment:
+                        PMA_HOST: database
+                        MYSQL_ROOT_PASSWORD: root
+
+volumes:
+        mysql:
+                driver: local
+        wordpress:
+                driver: local
